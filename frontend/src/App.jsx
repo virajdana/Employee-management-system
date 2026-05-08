@@ -24,6 +24,8 @@ function App() {
           <Route index element={<AdminSummary/>}></Route>
 
           <Route path="/admin-dashboard/departments" element={<DepartmentList/>}></Route>
+          <Route path="/admin-dashboard/add-department" element={<AddDepartment/>}></Route>
+          <Route path="/admin-dashboard/department/:id" element={<EditDepartment/>}></Route>
 
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
       </Routes>
