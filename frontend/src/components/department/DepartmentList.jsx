@@ -1,78 +1,132 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
-import {column, DepartmentButtons} from '../../utils/DepartmentHelper'
+import { columns } from '../../utils/DepartmentHelper'
+import DepartmentButtons from './DepartmentButtons'
+
 
 const DepartmentList = () => {
+
   const [departments, setDepartments] = useState([])
   const [depLoading, setDepLoading] = useState(false)
+  const [filteredDepartments, setFilteredDepartments] = useState([])
 
   const onDepartmentDelete = async (id) => {
     const data = departments.filter(dep => dep._id !== id)
     setDepartments(data)
+    setFilteredDepartments(data)
   }
 
-  useEffect (()=>{
-    const fetchDepartments = async () =>{
+  useEffect(() => {
+
+    const fetchDepartments = async () => {
+      console.log(localStorage.getItem("token"))
+
       setDepLoading(true)
-      try{
-        const response = await axios.get('http://localhost:5000/api/department',{
-          headers: {
-            "Authorization" : `Bearer ${localStorage.getItem('token')}`
+
+      try {
+
+        const response = await axios.get(
+          'http://localhost:5000/api/departments',
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
           }
-        })
-        if(response.data.success) {
+        )
+
+        if (response.data.success) {
+
           let sno = 1;
-          const data = await response.data.departments.map((dep)=>(
+
+          const data = response.data.departments.map((dep) => (
             {
               _id: dep._id,
               sno: sno++,
               dep_name: dep.dep_name,
-              acion:(<DepartmentButtons _id={dep._id} onDepartmentDelete={onDepartmentDelete}/>)
+              action: (
+                <DepartmentButtons
+                  _id={dep._id}
+                  onDepartmentDelete={onDepartmentDelete}
+                />
+              )
             }
-          ));
+          ))
+
           setDepartments(data)
+          setFilteredDepartments(data)
         }
-      }catch (error) {
+
+      } catch (error) {
+
         if (error.response && !error.response.data.success) {
-        alert(error.response.data.error)
+          alert(error.response.data.error)
+        }
+
+      } finally {
+        setDepLoading(false)
       }
-    }finally{
-      setDepLoading(false)
     }
-  };
 
+    fetchDepartments()
 
-  },[])
+  }, [])
+
+  const handleFilter = (e) => {
+
+    const records = departments.filter((dep) =>
+      dep.dep_name.toLowerCase().includes(e.target.value.toLowerCase())
+    )
+
+    setFilteredDepartments(records)
+  }
 
   return (
-    <>{depLoading ? <div>Loading...</div> : 
-    <div className='p-5'>
-      <div className='text-center'>
-        <h3 className='text-2xl font-bold'>Manage Department</h3>
-      </div>
-      <div className='flex justify-between items-center'>
-        <input
-          type='text'
-          placeholder='Search By Dep Name'
-          className='px-4 py-0.5 border'
-          />
-          <Link
-            to="/admin-dashboard/add-department"
-            className='px-4 py-1 bg-teal-600 rounded text-white'
-            >
-              Add New Department
-            </Link>
-      </div>
-      <div className='mt-5'>
-        <DataTable
-          columns={columns} data={departments}
-        />
-      </div>
-    </div>
-    }</>
-  );
-};
+    <>
+      {
+        depLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className='p-5'>
 
-export default DepartmentList;
+            <div className='text-center'>
+              <h3 className='text-2xl font-bold'>
+                Manage Department
+              </h3>
+            </div>
+
+            <div className='flex justify-between items-center'>
+
+              <input
+                type='text'
+                placeholder='Search By Dep Name'
+                className='px-4 py-0.5 border'
+                onChange={handleFilter}
+              />
+
+              <Link
+                to="/admin-dashboard/add-department"
+                className='px-4 py-1 bg-teal-600 rounded text-white'
+              >
+                Add New Department
+              </Link>
+
+            </div>
+
+            <div className='mt-5'>
+              <DataTable
+                columns={columns}
+                data={filteredDepartments}
+                pagination
+              />
+            </div>
+
+          </div>
+        )
+      }
+    </>
+  )
+}
+
+export default DepartmentList
