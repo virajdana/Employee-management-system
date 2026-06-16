@@ -102,7 +102,7 @@ const DepartmentList = () => {
                 type='text'
                 placeholder='Search By Dep Name'
                 className='px-4 py-0.5 border'
-                onChange={handleFilter}
+                onChange={filterDepartments}
               />
 
               <Link
