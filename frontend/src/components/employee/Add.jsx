@@ -1,6 +1,8 @@
 import React from 'react'
 
 const Add = () => {
+
+  
   return (
     <div className='max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
       <h2 className='text-2xl font-bold mb-6'>Add New Employee</h2>
@@ -79,7 +81,116 @@ const Add = () => {
               </select>
           </div>
 
-        </div>
+          {/* Marital Status */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Marital Status
+            </label>
+            <select
+              name="maritalStatus"
+              placeholder="Marital Status"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select Status</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+            </select>
+          </div>
+
+          {/* Designation */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Designation
+            </label>
+            <input
+              type="text"
+              name="designation"
+              placeholder="Designation"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Department */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Department
+            </label>
+            <select
+              name="department"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select Department</option>
+            </select>
+          </div>
+
+          {/* Salary */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Salary
+            </label>
+            <input
+              type="number"
+              name="salary"
+              placeholder="Salary"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="******"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Role */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Role
+            </label>
+            <select
+              name="role"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
+          
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              name="image"
+              placeholder="Upload Image"
+              accept="image/*"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+            />
+          </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Employee
+          </button>
       </form>
     </div>
   )
