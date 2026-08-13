@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { fetchDepartments } from "../../utils/EmployeeHelper";
 
 const Add = () => {
-
+  const [departments, setDepartments] = useState([]);
+  useEffect(() => {
+    const getDepartments = async () => {
+      const departments = await fetchDepartments();
+      setDepartments(departments);
+    };
+    getDepartments();
+  }, []);
   
   return (
     <div className='max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
@@ -123,6 +131,9 @@ const Add = () => {
               required
             >
               <option value="">Select Department</option>
+              {departments.map(dep => (
+                <option value={dep._id}>{dep.dep_name}</option>
+              ))}
             </select>
           </div>
 
