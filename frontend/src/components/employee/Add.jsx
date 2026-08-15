@@ -3,6 +3,8 @@ import { fetchDepartments } from "../../utils/EmployeeHelper";
 
 const Add = () => {
   const [departments, setDepartments] = useState([]);
+    const [formData, setFormData] = useState({})
+
   useEffect(() => {
     const getDepartments = async () => {
       const departments = await fetchDepartments();
@@ -10,11 +12,20 @@ const Add = () => {
     };
     getDepartments();
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target // Fixed typo: e.targer -> e.target
+    if (name === "image") {
+      setFormData((prevData) => ({ ...prevData, [name]: files[0] }))
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }))
+    }
+  }
   
   return (
     <div className='max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
       <h2 className='text-2xl font-bold mb-6'>Add New Employee</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           {/*Name*/}
           <div>
@@ -24,6 +35,7 @@ const Add = () => {
             <input
               type='text'
               name='name'
+              onChange={handleChange}
               placeholder='Insert Name'
               className='mt-1 p-2 block w-full border border-gray-300 rounded-md'
               required
@@ -38,6 +50,7 @@ const Add = () => {
             <input
               type='email'
               name='email'
+              onChange={handleChange}
               placeholder='Insert Email'
               className='mt-1 p-2 block w-full border border-gray-300 rounded-md'
               required
@@ -52,6 +65,7 @@ const Add = () => {
             <input
               type='text'
               name='employeeId'
+              onChange={handleChange}
               placeholder='Employee Id'
               className='mt-1 p-2 block w-full border border-gray-300 rounded-md'
               required
@@ -66,6 +80,7 @@ const Add = () => {
             <input
               type='date'
               name='dob'
+              onChange={handleChange}
               placeholder='DOB'
               className='mt-1 p-2 block w-full border border-gray-300 rounded-md'
               required
@@ -79,6 +94,7 @@ const Add = () => {
             </label>
             <select
               name='gender'
+              onChange={handleChange}
               className='mt-1 p-2 block w-full border border-gray-300 rounded-md'
               required
               >
@@ -96,6 +112,7 @@ const Add = () => {
             </label>
             <select
               name="maritalStatus"
+              onChange={handleChange}
               placeholder="Marital Status"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
@@ -114,6 +131,7 @@ const Add = () => {
             <input
               type="text"
               name="designation"
+              onChange={handleChange}
               placeholder="Designation"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
@@ -127,12 +145,13 @@ const Add = () => {
             </label>
             <select
               name="department"
+              onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             >
               <option value="">Select Department</option>
               {departments.map(dep => (
-                <option value={dep._id}>{dep.dep_name}</option>
+                <option key={dep._id} value={dep._id}>{dep.dep_name}</option>
               ))}
             </select>
           </div>
@@ -145,6 +164,7 @@ const Add = () => {
             <input
               type="number"
               name="salary"
+              onChange={handleChange}
               placeholder="Salary"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
@@ -160,6 +180,7 @@ const Add = () => {
               type="password"
               name="password"
               placeholder="******"
+              onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
@@ -172,6 +193,7 @@ const Add = () => {
             </label>
             <select
               name="role"
+              onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             >
@@ -189,6 +211,7 @@ const Add = () => {
             <input
               type="file"
               name="image"
+              onChange={handleChange}
               placeholder="Upload Image"
               accept="image/*"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
