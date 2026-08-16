@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchDepartments } from "../../utils/EmployeeHelper";
+import axios from "axios";
 
 const Add = () => {
   const [departments, setDepartments] = useState([]);
@@ -21,6 +22,34 @@ const Add = () => {
       setFormData((prevData) => ({ ...prevData, [name]: value }))
     }
   }
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const formDataObj = new FormData()
+  Object.keys(formData).forEach((key) => {
+    formDataObj.append(key, formData[key])
+  })
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/employee/add",
+      formDataObj,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.data.success) {
+      navigate("/admin-dashboard/employees");
+    }
+  } catch (error) {
+    if (error.response && !error.response.data.success) {
+      alert(error.response.data.error);
+    }
+  }
+};
   
   return (
     <div className='max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
